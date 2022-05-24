@@ -90,7 +90,14 @@ var app = app || {};
 			var todos = this.props.model.todos;
 
 			var shownTodos = todos.filter(function (todo) {
-				return todo
+				switch (this.state.nowShowing) {
+					case app.ACTIVE_TODOS:
+						return !todo.completed;
+					case app.COMPLETED_TODOS:
+						return todo.completed
+					default:
+						return true
+				}
 			}, this);
 
 			var todoItems = shownTodos.map(function (todo) {
@@ -113,6 +120,10 @@ var app = app || {};
 			}, 0);
 
 			var completedCount = todos.length - activeTodoCount;
+
+			// console.log('active', activeTodoCount)
+			// console.log('completed', completedCount)
+
 
 			footer =
 				<TodoFooter
